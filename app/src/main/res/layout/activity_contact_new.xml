@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ContactNewActivity">
+
+    <!-- Name Field -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Design.TextInputLayout"
+        android:id="@+id/nameField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="?attr/colorPrimary"
+        app:placeholderText="John Doe"
+        app:placeholderTextColor="?attr/colorSecondary"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <!-- Input Name -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:autofillHints="name"
+            android:hint="Name"
+            android:minHeight="48dp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Phone Number Field -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Design.TextInputLayout"
+        android:id="@+id/phoneField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="?attr/colorPrimary"
+        app:placeholderText="+6281234567"
+        app:placeholderTextColor="?attr/colorSecondary"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/nameField"
+        >
+
+        <!-- Input Phone Number -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:autofillHints="phone"
+            android:hint="Phone Number"
+            android:minHeight="48dp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Email Field -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Design.TextInputLayout"
+        android:id="@+id/emailField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="?attr/colorPrimary"
+        app:placeholderText="johndoe@email.com"
+        app:placeholderTextColor="?attr/colorSecondary"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/phoneField"
+        >
+
+        <!-- Input Email -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:autofillHints="emailAddress"
+            android:hint="Email"
+            android:minHeight="48dp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Address Field -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Design.TextInputLayout"
+        android:id="@+id/addressField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="?attr/colorPrimary"
+        app:placeholderText="Highway st., NYC"
+        app:placeholderTextColor="?attr/colorSecondary"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/emailField"
+        >
+
+        <!-- Input Address -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:autofillHints="postalAddress"
+            android:hint="Address"
+            android:minHeight="48dp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Back Button -->
+    <Button
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/addressField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        />
+
+    <!-- Insert Button -->
+    <Button
+        style="@style/Widget.MaterialComponents.Button"
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Contact"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/addressField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
