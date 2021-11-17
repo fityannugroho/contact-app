@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactNewActivity">
+    tools:context=".ContactEditActivity">
 
     <!-- Name Field -->
     <com.google.android.material.textfield.TextInputLayout
@@ -112,18 +112,18 @@
 
     <!-- Back Button -->
     <Button
-        android:id="@+id/btnBack"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
         android:text="@string/label_btn_back"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/btnAdd"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addressField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnEdit"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintWidth="0dp"
         />
@@ -131,19 +131,19 @@
     <!-- Insert Button -->
     <Button
         style="@style/Widget.MaterialComponents.Button"
-        android:id="@+id/btnAdd"
+        android:id="@+id/btnEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_btn_add"
+        android:text="@string/label_btn_edit"
         android:textAllCaps="false"
         app:layout_constraintTop_toBottomOf="@id/addressField"
         app:layout_constraintStart_toEndOf="@id/btnBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintWidth="0dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintWidth="0dp"
         android:layout_marginStart="8dp"
         />
 

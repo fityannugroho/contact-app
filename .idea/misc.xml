@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout-v26/item_contact.xml" value="0.25" />
         <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_contact_delete.xml" value="0.17527173913043478" />
-        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_contact_new.xml" value="0.24947916666666667" />
-        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_main.xml" value="0.2246376811594203" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_contact_details.xml" value="0.1" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_contact_edit.xml" value="0.1" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_contact_new.xml" value="0.1" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/item_contact.xml" value="0.1" />
       </map>
     </option>

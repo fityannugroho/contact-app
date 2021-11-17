@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">ContactApp</string>
+    <string name="desc_btn_add">Add New contact</string>
+    <string name="desc_btn_edit">Edit this contact</string>
+    <string name="desc_btn_delete">Delete this contact</string>
+    <string name="label_btn_back">Back</string>
+    <string name="label_btn_add">Add</string>
+    <string name="label_btn_edit">Edit</string>
+    <string name="label_btn_delete">Delete</string>
+    <string name="label_contact_name">Name</string>
+    <string name="label_contact_phone">Phone Number</string>
+    <string name="label_contact_email">Email</string>
+    <string name="label_contact_adress">Address</string>
+    <string name="value_contact_name">John Doe</string>
+    <string name="value_contact_phone">0812345678</string>
+    <string name="value_contact_email">johndoe@gmail.com</string>
+    <string name="value_contact_address">Highway st., NYC</string>
 </resources>

@@ -29,12 +29,51 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getContacts() {
-        SQLiteDatabase dbWrite = this.getReadableDatabase();
-        return dbWrite.rawQuery("SELECT * FROM Contacts", null);
+    /**
+     * Get a contact with specific id.
+     * @param id The contact id.
+     * @return A contact with specific id.
+     */
+    public Contact getContact(int id) {
+        String name = "", phone = "", email = "", address = "";
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        String query = "SELECT * FROM Contacts WHERE `id`=" + id;
+
+        try (Cursor cursor = dbRead.rawQuery(query, null)) {
+            cursor.moveToFirst();
+
+            do {
+                if (cursor.getCount() == 1) {
+                    name = cursor.getString(1);
+                    phone = cursor.getString(2);
+                    email = cursor.getString(3);
+                    address = cursor.getString(4);
+                }
+            } while (cursor.moveToNext());
+        }
+
+        return new Contact(id, name, phone, email, address);
     }
 
 
+    /**
+     * Get all contacts.
+     * @return The contacts in the table.
+     */
+    public Cursor getContacts() {
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        return dbRead.rawQuery("SELECT * FROM Contacts", null);
+    }
+
+
+    /**
+     * Insert a contact to the table.
+     * @param name The contact name.
+     * @param phone The contact phone number.
+     * @param email The contact email.
+     * @param address The contact address.
+     * @return True if success, or otherwise.
+     */
     public boolean insertContact(String name, String phone, String email, String address) {
         SQLiteDatabase dbWrite = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -49,6 +88,15 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Update a contact data with specific id.
+     * @param id The contact id.
+     * @param name The new contact name.
+     * @param phone The new contact phone number.
+     * @param email The new contact email.
+     * @param address The new contact address.
+     * @return True if success, or otherwise.
+     */
     public boolean updateContact(int id, String name, String phone, String email, String address) {
         SQLiteDatabase dbWrite = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -64,6 +112,11 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Delete a contact with specific id.
+     * @param id The contact id.
+     * @return True if success, or otherwise.
+     */
     public boolean deleteContact(int id) {
         SQLiteDatabase dbWrite = this.getWritableDatabase();
 
