@@ -18,7 +18,7 @@ public class ContactListViewHolder extends RecyclerView.ViewHolder {
     /**
      * Closure to handle actions of contact item.
      */
-    ContactAdapter.OnItemListener onItemListener;
+    final ContactAdapter.OnItemListener onItemListener;
 
 
     public ContactListViewHolder(@NonNull View itemView, ContactAdapter.OnItemListener onItemListener) {

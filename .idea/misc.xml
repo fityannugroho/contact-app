@@ -3,13 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.26614583333333336" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/drawable/ic_delete_32.xml" value="0.26614583333333336" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/drawable/ic_edit_32.xml" value="0.26614583333333336" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26614583333333336" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/drawable/ic_person_add_32.xml" value="0.26614583333333336" />
         <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout-v26/item_contact.xml" value="0.25" />
         <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_contact_delete.xml" value="0.17527173913043478" />
         <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_contact_details.xml" value="0.1" />
         <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_contact_edit.xml" value="0.1" />
         <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_contact_new.xml" value="0.1" />
         <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/item_contact.xml" value="0.1" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/layout/item_contact.xml" value="0.264" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26614583333333336" />
+        <entry key="..\:/Programming/AndroidStudio/Project/ContactApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.26614583333333336" />
       </map>
     </option>
   </component>

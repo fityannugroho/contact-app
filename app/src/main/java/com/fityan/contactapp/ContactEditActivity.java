@@ -1,17 +1,14 @@
 package com.fityan.contactapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
-
-import javax.xml.validation.Validator;
 
 public class ContactEditActivity extends AppCompatActivity {
     /**
