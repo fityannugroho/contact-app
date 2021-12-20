@@ -1,4 +1,4 @@
-package com.fityan.contactapp;
+package com.fityan.contactapp.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fityan.contactapp.adapters.ContactAdapter;
+import com.fityan.contactapp.helpers.DBHelper;
+import com.fityan.contactapp.R;
+import com.fityan.contactapp.models.Contact;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;

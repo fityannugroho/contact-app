@@ -1,15 +1,20 @@
-package com.fityan.contactapp;
+package com.fityan.contactapp.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fityan.contactapp.R;
+import com.fityan.contactapp.models.Contact;
+
 import java.util.ArrayList;
 
-public class ContactAdapter extends RecyclerView.Adapter<ContactListViewHolder> {
+public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactListViewHolder> {
     /**
      * List of contact.
      */
@@ -52,9 +57,51 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactListViewHolder> 
 
 
     /**
+     * View Holder for contact list.
+     */
+    static class ContactListViewHolder extends RecyclerView.ViewHolder {
+        /* View elements */
+        protected final TextView tvName;
+        protected final TextView tvPhone;
+        protected final ImageButton btnEdit;
+        protected final ImageButton btnDelete;
+
+        /**
+         * Closure to handle actions of contact item.
+         */
+        final ContactAdapter.OnItemListener onItemListener;
+
+
+        public ContactListViewHolder(@NonNull View itemView, ContactAdapter.OnItemListener onItemListener) {
+            super(itemView);
+
+            /* Initialize view elements. */
+            tvName = itemView.findViewById(R.id.tvName);
+            tvPhone = itemView.findViewById(R.id.tvPhone);
+            btnEdit = itemView.findViewById(R.id.btnEdit);
+            btnDelete = itemView.findViewById(R.id.btnDelete);
+
+            /* Initialize the itemListener closure. */
+            this.onItemListener = onItemListener;
+
+            /* Set actions when item is clicked */
+            itemView.setOnClickListener(view ->
+                onItemListener.onItemClick(getAdapterPosition()));
+
+            /* Set delete actions when Delete Button is clicked */
+            btnDelete.setOnClickListener(view ->
+                onItemListener.onDeleteItem(getAdapterPosition()));
+
+            /* Set edit actions when Edit Button is clicked */
+            btnEdit.setOnClickListener(view ->
+                onItemListener.onEditItem(getAdapterPosition()));
+        }
+    }
+
+    /**
      * Action listener for contact item.
      */
-    interface OnItemListener {
+    public interface OnItemListener {
         /**
          * Set actions when item is clicked.
          * @param position The position of item.

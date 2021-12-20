@@ -1,4 +1,4 @@
-package com.fityan.contactapp;
+package com.fityan.contactapp.models;
 
 public class Contact {
     private final int id;

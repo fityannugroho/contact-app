@@ -1,10 +1,12 @@
-package com.fityan.contactapp;
+package com.fityan.contactapp.helpers;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.fityan.contactapp.models.Contact;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "contact.db";

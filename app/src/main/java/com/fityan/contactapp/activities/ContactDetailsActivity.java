@@ -1,10 +1,14 @@
-package com.fityan.contactapp;
+package com.fityan.contactapp.activities;
 
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.fityan.contactapp.helpers.DBHelper;
+import com.fityan.contactapp.R;
+import com.fityan.contactapp.models.Contact;
 
 public class ContactDetailsActivity extends AppCompatActivity {
     /**
