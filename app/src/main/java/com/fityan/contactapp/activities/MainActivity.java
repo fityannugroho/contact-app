@@ -3,6 +3,7 @@ package com.fityan.contactapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,8 +11,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fityan.contactapp.adapters.ContactAdapter;
 import com.fityan.contactapp.R;
+import com.fityan.contactapp.adapters.ContactAdapter;
 import com.fityan.contactapp.helpers.ContactsCollection;
 import com.fityan.contactapp.models.Contact;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -95,13 +96,13 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
         Button positiveBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveBtn.setOnClickListener(view -> {
             /* Delete contact */
-//            if (dbHelper.deleteContact(contacts.get(position).getId())) {
-//                /* Refresh the contact list view */
-//                onRestart();
-//                Toast.makeText(getApplicationContext(), "One contact has been deleted", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(getApplicationContext(), "Failed to delete contact", Toast.LENGTH_SHORT).show();
-//            }
+            contactsCollection.delete(contacts.get(position).getId())
+                .addOnSuccessListener(unused -> {
+                    /* Refresh the contact list view */
+                    onRestart();
+                    Toast.makeText(getApplicationContext(), "One contact has been deleted", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to delete contact", Toast.LENGTH_SHORT).show());
 
             dialog.dismiss();
         });

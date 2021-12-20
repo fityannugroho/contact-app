@@ -52,4 +52,9 @@ public class ContactsCollection {
                 "address", contact.getAddress()
             );
     }
+
+
+    public Task<Void> delete(String contactId) {
+        return this.collection.document(contactId).delete();
+    }
 }
