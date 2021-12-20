@@ -54,7 +54,7 @@ public class DBHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        return new Contact(id, name, phone, email, address);
+        return new Contact(String.valueOf(id), name, phone, email, address);
     }
 
 

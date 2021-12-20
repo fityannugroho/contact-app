@@ -1,13 +1,15 @@
 package com.fityan.contactapp.models;
 
 public class Contact {
-    private final int id;
+    private String id;
     private String name;
     private String phone;
     private String email;
     private String address;
 
-    public Contact(int id, String name, String phone, String email, String address) {
+    public Contact() {}
+
+    public Contact(String id, String name, String phone, String email, String address) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -47,7 +49,11 @@ public class Contact {
         this.address = address;
     }
 
-    public int getId() {
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
         return id;
     }
 }
