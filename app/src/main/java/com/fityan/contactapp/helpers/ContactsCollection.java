@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -17,5 +18,11 @@ public class ContactsCollection {
     public Task<QuerySnapshot> findAll() {
         return this.collection.get()
             .addOnFailureListener(e -> Log.w(FIND_ALL, "Error writing document", e));
+    }
+
+
+    public Task<DocumentSnapshot> findOne(String id) {
+        return this.collection.document(id).get()
+            .addOnFailureListener(e -> Log.w(FIND_ALL, "Error getting document", e));
     }
 }

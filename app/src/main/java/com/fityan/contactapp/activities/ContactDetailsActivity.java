@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fityan.contactapp.helpers.ContactsCollection;
 import com.fityan.contactapp.helpers.DBHelper;
 import com.fityan.contactapp.R;
 import com.fityan.contactapp.models.Contact;
@@ -15,6 +16,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
      * Helper to interact with database.
      */
     private final DBHelper dbHelper = new DBHelper(this);
+    private final ContactsCollection contactsCollection = new ContactsCollection();
 
     /* View elements. */
     private TextView tvName, tvPhone, tvEmail, tvAddress;
@@ -32,15 +34,17 @@ public class ContactDetailsActivity extends AppCompatActivity {
         tvAddress = findViewById(R.id.tvAddress);
         btnBack = findViewById(R.id.btnBack);
 
-        /* Get the contact. */
-        Contact contact = dbHelper.getContact(
-                getIntent().getIntExtra("id", 0));
+        String contactId = getIntent().getStringExtra("id");
 
-        /* Display the contact data. */
-        tvName.setText(contact.getName());
-        tvPhone.setText(contact.getPhone());
-        tvEmail.setText(contact.getEmail());
-        tvAddress.setText(contact.getAddress());
+        /* Get the contact. */
+        contactsCollection.findOne(contactId)
+            .addOnSuccessListener(documentSnapshot -> {
+                /* Display the contact data. */
+                tvName.setText(documentSnapshot.getString("name"));
+                tvPhone.setText(documentSnapshot.getString("phone"));
+                tvEmail.setText(documentSnapshot.getString("email"));
+                tvAddress.setText(documentSnapshot.getString("address"));
+            });
 
         /* When Back Button is clicked, back to previous activity. */
         btnBack.setOnClickListener(view -> onBackPressed());
