@@ -6,16 +6,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fityan.contactapp.helpers.ContactsCollection;
-import com.fityan.contactapp.helpers.DBHelper;
 import com.fityan.contactapp.R;
-import com.fityan.contactapp.models.Contact;
+import com.fityan.contactapp.helpers.ContactsCollection;
 
 public class ContactDetailsActivity extends AppCompatActivity {
     /**
      * Helper to interact with database.
      */
-    private final DBHelper dbHelper = new DBHelper(this);
     private final ContactsCollection contactsCollection = new ContactsCollection();
 
     /* View elements. */
