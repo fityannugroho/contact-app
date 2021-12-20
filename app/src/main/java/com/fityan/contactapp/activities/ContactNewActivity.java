@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fityan.contactapp.helpers.DBHelper;
+import com.fityan.contactapp.helpers.ContactsCollection;
 import com.fityan.contactapp.R;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -14,9 +14,9 @@ import java.util.Objects;
 
 public class ContactNewActivity extends AppCompatActivity {
     /**
-     * Helper to interact with database.
+     * Helper to interact with contacts collection.
      */
-    private final DBHelper dbHelper = new DBHelper(this);
+    private final ContactsCollection contactsCollection = new ContactsCollection();
 
     /* View elements */
     private Button btnBack, btnAdd;
@@ -38,7 +38,7 @@ public class ContactNewActivity extends AppCompatActivity {
 
         /* When Add Button is clicked, */
         btnAdd.setOnClickListener(view -> {
-            /* Execute insert query */
+            /* Validate input then execute the query */
             try {
                 String name, phone, email, address;
 
@@ -48,15 +48,13 @@ public class ContactNewActivity extends AppCompatActivity {
                 email = getTextFromInput(inputEmail, false);
                 address = getTextFromInput(inputAddress, false);
 
-                /* Execute query, then give a feedback. */
-                if (dbHelper.insertContact(name, phone, email, address)) {
-                    Toast.makeText(this, "Contact added successfully", Toast.LENGTH_SHORT).show();
-
-                    /* Finish the activity and back to previous activity automatically. */
-                    finish();
-                } else {
-                    Toast.makeText(this, "Failed to add contact", Toast.LENGTH_SHORT).show();
-                }
+                /* Execute insert query, then give a feedback. */
+                contactsCollection.insert(name, phone, email, address)
+                    .addOnSuccessListener(documentReference -> {
+                        Toast.makeText(this, "Contact added successfully", Toast.LENGTH_SHORT).show();
+                        finish();    /* Finish the activity and back to previous activity automatically. */
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(this, "Failed to add contact", Toast.LENGTH_SHORT).show());
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }

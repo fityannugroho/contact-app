@@ -5,9 +5,13 @@ import android.util.Log;
 import com.fityan.contactapp.models.Contact;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ContactsCollection {
     public static final String FIND_ALL = "findAll";
@@ -25,6 +29,17 @@ public class ContactsCollection {
     public Task<DocumentSnapshot> findOne(String id) {
         return this.collection.document(id).get()
             .addOnFailureListener(e -> Log.w(FIND_ALL, "Error getting document", e));
+    }
+
+
+    public Task<DocumentReference> insert(String name, String phone, String email, String address) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", name);
+        data.put("phone", phone);
+        data.put("email", email);
+        data.put("address", address);
+
+        return this.collection.add(data);
     }
 
 
