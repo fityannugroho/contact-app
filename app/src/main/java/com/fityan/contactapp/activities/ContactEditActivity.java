@@ -57,21 +57,26 @@ public class ContactEditActivity extends AppCompatActivity {
 
         /* When Edit Button is clicked, */
         btnEdit.setOnClickListener(view -> {
-            /* Retreive new data from input. */
-            contact.setName(getTextFromInput(inputName, true));
-            contact.setPhone(getTextFromInput(inputPhone, true));
-            contact.setEmail(getTextFromInput(inputEmail, false));
-            contact.setAddress(getTextFromInput(inputAddress, false));
+            /* Validate input then execute the query */
+            try {
+                /* Retreive new data from input. */
+                contact.setName(getTextFromInput(inputName, true));
+                contact.setPhone(getTextFromInput(inputPhone, true));
+                contact.setEmail(getTextFromInput(inputEmail, false));
+                contact.setAddress(getTextFromInput(inputAddress, false));
 
-            /* Execute update query, then give a feedback. */
-            contactsCollection.update(contact)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(this, "Contact successfully updated", Toast.LENGTH_SHORT).show();
-                        finish();    /* Finish the activity and back to previous activity automatically. */
-                    }
-                })
-                .addOnFailureListener(e -> Toast.makeText(this, "Failed to update contact", Toast.LENGTH_SHORT).show());
+                /* Execute update query, then give a feedback. */
+                contactsCollection.update(contact)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(this, "Contact successfully updated", Toast.LENGTH_SHORT).show();
+                            finish();    /* Finish the activity and back to previous activity automatically. */
+                        }
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(this, "Failed to update contact", Toast.LENGTH_SHORT).show());
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
         });
 
         /* When Back Button is clicked, back to previous activity. */
