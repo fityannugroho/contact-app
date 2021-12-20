@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fityan.contactapp.helpers.DBHelper;
 import com.fityan.contactapp.R;
+import com.fityan.contactapp.helpers.ContactsCollection;
 import com.fityan.contactapp.models.Contact;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -17,12 +17,12 @@ public class ContactEditActivity extends AppCompatActivity {
     /**
      * Helper to interact with database.
      */
-    private final DBHelper dbHelper = new DBHelper(this);
+    private final ContactsCollection contactsCollection = new ContactsCollection();
 
     /**
      * The contact to be changed.
      */
-    private Contact contact;
+    private final Contact contact = new Contact();
 
     /* View elements. */
     private Button btnBack, btnEdit;
@@ -43,39 +43,35 @@ public class ContactEditActivity extends AppCompatActivity {
         inputPhone = findViewById(R.id.inputPhone);
 
         /* Get the contact to be changed. */
-        contact = dbHelper.getContact(
-                getIntent().getIntExtra("id", 0));
+        contact.setId(getIntent().getStringExtra("id"));
 
-        /* Display the contact data. */
-        inputName.setText(contact.getName());
-        inputPhone.setText(contact.getPhone());
-        inputEmail.setText(contact.getEmail());
-        inputAddress.setText(contact.getAddress());
+        /* Get the contact. */
+        contactsCollection.findOne(contact.getId())
+            .addOnSuccessListener(documentSnapshot -> {
+                /* Display the contact data. */
+                inputName.setText(documentSnapshot.getString("name"));
+                inputPhone.setText(documentSnapshot.getString("phone"));
+                inputEmail.setText(documentSnapshot.getString("email"));
+                inputAddress.setText(documentSnapshot.getString("address"));
+            });
 
         /* When Edit Button is clicked, */
         btnEdit.setOnClickListener(view -> {
-            /* Execute update query */
-            try {
-                String name, phone, email, address;
+            /* Retreive new data from input. */
+            contact.setName(getTextFromInput(inputName, true));
+            contact.setPhone(getTextFromInput(inputPhone, true));
+            contact.setEmail(getTextFromInput(inputEmail, false));
+            contact.setAddress(getTextFromInput(inputAddress, false));
 
-                /* Retreive new data from input. */
-                name = getTextFromInput(inputName, true);
-                phone = getTextFromInput(inputPhone, true);
-                email = getTextFromInput(inputEmail, false);
-                address = getTextFromInput(inputAddress, false);
-
-                /* Execute query, then give a feedback. */
-                if (dbHelper.updateContact(contact.getId(), name, phone, email, address)) {
-                    Toast.makeText(this, "Contact successfully updated", Toast.LENGTH_SHORT).show();
-
-                    /* Finish the activity and back to previous activity automatically. */
-                    finish();
-                } else {
-                    Toast.makeText(this, "Failed to update contact", Toast.LENGTH_SHORT).show();
-                }
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
+            /* Execute update query, then give a feedback. */
+            contactsCollection.update(contact)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Contact successfully updated", Toast.LENGTH_SHORT).show();
+                        finish();    /* Finish the activity and back to previous activity automatically. */
+                    }
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Failed to update contact", Toast.LENGTH_SHORT).show());
         });
 
         /* When Back Button is clicked, back to previous activity. */
