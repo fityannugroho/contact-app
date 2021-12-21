@@ -2,16 +2,24 @@ package com.fityan.contactapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fityan.contactapp.R;
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
+    /**
+     * Firebase authentication.
+     */
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+
     /* View elements. */
-    private TextInputEditText inputEmail, inputPassword, inputCPassword;
+    private EditText inputEmail, inputPassword, inputCPassword;
     private Button btnRegister, btnLogin;
 
 
@@ -29,6 +37,35 @@ public class RegisterActivity extends AppCompatActivity {
 
         /* Event handler when Register Button is clicked. */
         btnRegister.setOnClickListener(view -> {
+            /* Validate inputs, */
+            try {
+                String email = getTextFromInput(inputEmail, true);
+                String password = getTextFromInput(inputPassword, true);
+                String cPassword = getTextFromInput(inputCPassword, true);
+
+                if (!password.equals(cPassword)) {
+                    inputCPassword.setError("Confirm password doesn't match.");
+                    throw new Exception("Confirm password doesn't match.");
+                }
+
+                /* Start registration. */
+                auth.createUserWithEmailAndPassword(email, password)
+                    /* If success. */
+                    .addOnSuccessListener(authResult -> {
+                        Toast.makeText(this, "Account registration successful.",
+                            Toast.LENGTH_SHORT).show();
+
+                        /* Go back to login activity. */
+                        startActivity(new Intent(this, LoginActivity.class));
+                        finish();
+                    })
+                    /* If failed. */
+                    .addOnFailureListener(
+                        e -> Toast.makeText(this, e.getMessage(),
+                            Toast.LENGTH_LONG).show());
+            } catch (Exception e) {
+                Log.w("InvalidInput", "Some input is invalid.");
+            }
         });
 
         /* Event handler when Login Button is clicked. */
@@ -37,5 +74,26 @@ public class RegisterActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         });
+    }
+
+
+    /**
+     * Retreive data from input, and validate the requirement.
+     *
+     * @param input    The input element.
+     * @param required Is value required?
+     * @return The input value.
+     * @throws NullPointerException If validation failed.
+     */
+    private String getTextFromInput(EditText input, boolean required) {
+        String value = input.getText().toString();
+
+        if (value.isEmpty() && required) {
+            input.setError("This input is required");
+            throw new NullPointerException(
+                "Field " + input.getHint() + " is required.");
+        }
+
+        return value;
     }
 }
