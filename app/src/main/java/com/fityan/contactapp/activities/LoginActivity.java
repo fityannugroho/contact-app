@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             /* Input validation */
             try {
                 String email = getTextFromInput(inputEmail, true);
-                String password = getTextFromInput(inputPassword, false);
+                String password = getTextFromInput(inputPassword, true);
 
                 /* start authentication. */
                 auth.signInWithEmailAndPassword(email, password)
