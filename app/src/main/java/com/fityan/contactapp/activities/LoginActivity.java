@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /* View Elements */
     private EditText inputEmail, inputPassword;
-    private Button btnLogin;
+    private Button btnLogin, btnRegister;
 
 
     @Override
@@ -31,7 +31,8 @@ public class LoginActivity extends AppCompatActivity {
         /* Get View Elements by its id */
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
-        btnLogin = findViewById(R.id.buttonLogin);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnRegister = findViewById(R.id.btnRegister);
 
         /* Event handler when Login Button is clicked */
         btnLogin.setOnClickListener(view -> {
@@ -54,6 +55,13 @@ public class LoginActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.w("InvalidInput", "Input is invalid", e);
             }
+        });
+
+        /* Event handler when Login Button is clicked */
+        btnRegister.setOnClickListener(view -> {
+            /* Go to register activity. */
+            startActivity(new Intent(this, RegisterActivity.class));
+            finish();
         });
     }
 
