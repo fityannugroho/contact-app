@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ContactNewActivity">
+    tools:context=".activities.ContactNewActivity"
+    >
 
     <!-- Name Field -->
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.Design.TextInputLayout"
         android:id="@+id/nameField"
+        style="@style/Widget.Design.TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="?attr/colorPrimary"
-        app:placeholderText="John Doe"
-        app:placeholderTextColor="?attr/placeholderTextColor"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
+        android:textColorHint="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
+        app:placeholderText="John Doe"
+        app:placeholderTextColor="?attr/placeholderTextColor"
         >
 
         <!-- Input Name -->
@@ -25,25 +26,25 @@
             android:id="@+id/inputName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:autofillHints="name"
             android:hint="@string/label_contact_name"
+            android:inputType="textPersonName"
             android:minHeight="48dp"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Phone Number Field -->
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.Design.TextInputLayout"
         android:id="@+id/phoneField"
+        style="@style/Widget.Design.TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="?attr/colorPrimary"
-        app:placeholderText="+6281234567"
-        app:placeholderTextColor="?attr/placeholderTextColor"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
+        android:textColorHint="?attr/colorPrimary"
         app:layout_constraintTop_toBottomOf="@+id/nameField"
+        app:placeholderText="+6281234567"
+        app:placeholderTextColor="?attr/placeholderTextColor"
         >
 
         <!-- Input Phone Number -->
@@ -51,25 +52,25 @@
             android:id="@+id/inputPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
             android:autofillHints="phone"
             android:hint="@string/label_contact_phone"
+            android:inputType="phone"
             android:minHeight="48dp"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Email Field -->
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.Design.TextInputLayout"
         android:id="@+id/emailField"
+        style="@style/Widget.Design.TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="?attr/colorPrimary"
-        app:placeholderText="johndoe@email.com"
-        app:placeholderTextColor="?attr/placeholderTextColor"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
+        android:textColorHint="?attr/colorPrimary"
         app:layout_constraintTop_toBottomOf="@+id/phoneField"
+        app:placeholderText="johndoe@email.com"
+        app:placeholderTextColor="?attr/placeholderTextColor"
         >
 
         <!-- Input Email -->
@@ -77,25 +78,25 @@
             android:id="@+id/inputEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
             android:autofillHints="emailAddress"
             android:hint="@string/label_contact_email"
+            android:inputType="textEmailAddress"
             android:minHeight="48dp"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Address Field -->
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.Design.TextInputLayout"
         android:id="@+id/addressField"
+        style="@style/Widget.Design.TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="?attr/colorPrimary"
-        app:placeholderText="Highway st., NYC"
-        app:placeholderTextColor="?attr/placeholderTextColor"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
+        android:textColorHint="?attr/colorPrimary"
         app:layout_constraintTop_toBottomOf="@+id/emailField"
+        app:placeholderText="Highway st., NYC"
+        app:placeholderTextColor="?attr/placeholderTextColor"
         >
 
         <!-- Input Address -->
@@ -103,9 +104,9 @@
             android:id="@+id/inputAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPostalAddress"
             android:autofillHints="postalAddress"
             android:hint="@string/label_contact_adress"
+            android:inputType="textPostalAddress"
             android:minHeight="48dp"
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -120,31 +121,31 @@
         android:layout_marginTop="24dp"
         android:text="@string/label_btn_back"
         android:textAllCaps="false"
+        app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toStartOf="@+id/btnAdd"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addressField"
-        app:layout_constrainedWidth="true"
         app:layout_constraintWidth="0dp"
         />
 
     <!-- Insert Button -->
     <Button
-        style="@style/Widget.MaterialComponents.Button"
         android:id="@+id/btnAdd"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_btn_add"
-        android:textAllCaps="false"
-        app:layout_constraintTop_toBottomOf="@id/addressField"
-        app:layout_constraintStart_toEndOf="@id/btnBack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintWidth="0dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
+        android:text="@string/label_btn_add"
+        android:textAllCaps="false"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/btnBack"
+        app:layout_constraintTop_toBottomOf="@id/addressField"
+        app:layout_constraintWidth="0dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
