@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
         /* When Add Button is clicked, */
         btnAddContact.setOnClickListener(view -> {
             /* go to add contact page. */
-            startActivity(new Intent(getApplicationContext(), ContactNewActivity.class));
+            startActivity(
+                new Intent(getApplicationContext(), ContactNewActivity.class));
         });
     }
 
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
     @Override
     public void onItemClick(int position) {
         /* Go to contact details page with bring contact id. */
-        Intent intent = new Intent(getApplicationContext(), ContactDetailsActivity.class);
+        Intent intent = new Intent(this, ContactDetailsActivity.class);
         intent.putExtra("id", contacts.get(position).getId());
         startActivity(intent);
     }
@@ -85,12 +86,12 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
     @Override
     public void onDeleteItem(int position) {
         /* Show confirmation dialog. */
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Delete confirmation")
-                .setMessage("Are you sure to delete this contact?")
-                .setPositiveButton("Delete Contact", null)
-                .setNegativeButton("Cancel", null)
-                .show();
+        AlertDialog dialog = new AlertDialog.Builder(this).setTitle(
+            "Delete Contact")
+            .setMessage("Are you sure to delete this contact?")
+            .setPositiveButton("Delete Contact", null)
+            .setNegativeButton("Cancel", null)
+            .show();
 
         /* Execute deletion after confirmation. */
         Button positiveBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -100,9 +101,13 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
                 .addOnSuccessListener(unused -> {
                     /* Refresh the contact list view */
                     onRestart();
-                    Toast.makeText(getApplicationContext(), "One contact has been deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                        "One contact has been deleted", Toast.LENGTH_SHORT)
+                        .show();
                 })
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to delete contact", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(
+                    e -> Toast.makeText(getApplicationContext(),
+                        "Failed to delete contact", Toast.LENGTH_SHORT).show());
 
             dialog.dismiss();
         });
@@ -112,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
     @Override
     public void onEditItem(int position) {
         /* Go to contact edit page with bring contact id. */
-        Intent intent = new Intent(getApplicationContext(), ContactEditActivity.class);
+        Intent intent = new Intent(this, ContactEditActivity.class);
         intent.putExtra("id", contacts.get(position).getId());
         startActivity(intent);
     }
@@ -123,22 +128,20 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
      */
     private void loadContactsFromDB() {
         /* Retreive contact data from database. */
-        contactsCollection.findAll().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
-                contacts.add(new Contact(
-                    document.getId(),
-                    document.getString("name"),
-                    document.getString("phone"),
-                    document.getString("email"),
-                    document.getString("address")
-                ));
-            }
+        contactsCollection.findAll()
+            .addOnSuccessListener(queryDocumentSnapshots -> {
+                for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                    contacts.add(new Contact(document.getId(),
+                        document.getString("name"), document.getString("phone"),
+                        document.getString("email"),
+                        document.getString("address")));
+                }
 
-            /* Set the adapter to displaying contact list. */
-            rvContact.setAdapter(new ContactAdapter(contacts, this));
-            rvContact.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            rvContact.setItemAnimator(new DefaultItemAnimator());
-        });
+                /* Set the adapter to displaying contact list. */
+                rvContact.setAdapter(new ContactAdapter(contacts, this));
+                rvContact.setLayoutManager(new LinearLayoutManager(this));
+                rvContact.setItemAnimator(new DefaultItemAnimator());
+            });
     }
 
 

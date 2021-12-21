@@ -69,11 +69,14 @@ public class ContactEditActivity extends AppCompatActivity {
                 contactsCollection.update(contact)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(this, "Contact successfully updated", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Contact successfully updated",
+                                Toast.LENGTH_SHORT).show();
                             finish();    /* Finish the activity and back to previous activity automatically. */
                         }
                     })
-                    .addOnFailureListener(e -> Toast.makeText(this, "Failed to update contact", Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(
+                        e -> Toast.makeText(this, "Failed to update contact",
+                            Toast.LENGTH_SHORT).show());
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
@@ -86,7 +89,8 @@ public class ContactEditActivity extends AppCompatActivity {
 
     /**
      * Retreive data from input, and validate the requirement.
-     * @param input The input element.
+     *
+     * @param input    The input element.
      * @param required Is value required?
      * @return The input value.
      * @throws NullPointerException If validation failed.
@@ -96,7 +100,8 @@ public class ContactEditActivity extends AppCompatActivity {
 
         if (value.isEmpty() && required) {
             input.setError("This input is required");
-            throw new NullPointerException("Field " + input.getHint() + " is required.");
+            throw new NullPointerException(
+                "Field " + input.getHint() + " is required.");
         }
 
         return value;

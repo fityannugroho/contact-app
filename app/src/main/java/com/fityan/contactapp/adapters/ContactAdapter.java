@@ -35,7 +35,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactL
     @NonNull
     @Override
     public ContactListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_contact, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext())
+            .inflate(R.layout.item_contact, parent, false);
         return new ContactListViewHolder(itemView, onItemListener);
     }
 
@@ -53,6 +54,33 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactL
     @Override
     public int getItemCount() {
         return contacts.size();
+    }
+
+
+    /**
+     * Action listener for contact item.
+     */
+    public interface OnItemListener {
+        /**
+         * Set actions when item is clicked.
+         *
+         * @param position The position of item.
+         */
+        void onItemClick(int position);
+
+        /**
+         * Set delete actions when Delete Button on item is clicked.
+         *
+         * @param position The position of item.
+         */
+        void onDeleteItem(int position);
+
+        /**
+         * Set edit actions when Edit Button on item is clicked.
+         *
+         * @param position The position of item.
+         */
+        void onEditItem(int position);
     }
 
 
@@ -85,39 +113,16 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactL
             this.onItemListener = onItemListener;
 
             /* Set actions when item is clicked */
-            itemView.setOnClickListener(view ->
-                onItemListener.onItemClick(getAdapterPosition()));
+            itemView.setOnClickListener(
+                view -> onItemListener.onItemClick(getAdapterPosition()));
 
             /* Set delete actions when Delete Button is clicked */
-            btnDelete.setOnClickListener(view ->
-                onItemListener.onDeleteItem(getAdapterPosition()));
+            btnDelete.setOnClickListener(
+                view -> onItemListener.onDeleteItem(getAdapterPosition()));
 
             /* Set edit actions when Edit Button is clicked */
-            btnEdit.setOnClickListener(view ->
-                onItemListener.onEditItem(getAdapterPosition()));
+            btnEdit.setOnClickListener(
+                view -> onItemListener.onEditItem(getAdapterPosition()));
         }
-    }
-
-    /**
-     * Action listener for contact item.
-     */
-    public interface OnItemListener {
-        /**
-         * Set actions when item is clicked.
-         * @param position The position of item.
-         */
-        void onItemClick(int position);
-
-        /**
-         * Set delete actions when Delete Button on item is clicked.
-         * @param position The position of item.
-         */
-        void onDeleteItem(int position);
-
-        /**
-         * Set edit actions when Edit Button on item is clicked.
-         * @param position The position of item.
-         */
-        void onEditItem(int position);
     }
 }

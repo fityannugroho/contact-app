@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.fityan.contactapp.helpers.ContactsCollection;
 import com.fityan.contactapp.R;
+import com.fityan.contactapp.helpers.ContactsCollection;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
@@ -51,10 +51,13 @@ public class ContactNewActivity extends AppCompatActivity {
                 /* Execute insert query, then give a feedback. */
                 contactsCollection.insert(name, phone, email, address)
                     .addOnSuccessListener(documentReference -> {
-                        Toast.makeText(this, "Contact added successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Contact added successfully",
+                            Toast.LENGTH_SHORT).show();
                         finish();    /* Finish the activity and back to previous activity automatically. */
                     })
-                    .addOnFailureListener(e -> Toast.makeText(this, "Failed to add contact", Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(
+                        e -> Toast.makeText(this, "Failed to add contact",
+                            Toast.LENGTH_SHORT).show());
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
@@ -67,7 +70,8 @@ public class ContactNewActivity extends AppCompatActivity {
 
     /**
      * Retreive data from input, and validate the requirement.
-     * @param input The input element.
+     *
+     * @param input    The input element.
      * @param required Is value required?
      * @return The input value.
      * @throws NullPointerException If validation failed.
@@ -77,7 +81,8 @@ public class ContactNewActivity extends AppCompatActivity {
 
         if (value.isEmpty() && required) {
             input.setError("This input is required");
-            throw new NullPointerException("Field " + input.getHint() + " is required.");
+            throw new NullPointerException(
+                "Field " + input.getHint() + " is required.");
         }
 
         return value;
