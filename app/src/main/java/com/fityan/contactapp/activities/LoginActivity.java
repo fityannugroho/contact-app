@@ -2,6 +2,7 @@ package com.fityan.contactapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -9,8 +10,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fityan.contactapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
+    /**
+     * Firebase authentication.
+     */
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+
     /* View Elements */
     private EditText inputEmail, inputPassword;
     private Button btnLogin;
@@ -28,62 +35,66 @@ public class LoginActivity extends AppCompatActivity {
 
         /* Event handler when Login Button is clicked */
         btnLogin.setOnClickListener(view -> {
-            String email = inputEmail.getText().toString();
-            String password = inputPassword.getText().toString();
-
             /* Input validation */
-            if (validateInputs()) {
-                /* Login auth */
-                if (this.auth(email, password)) {
-                    /* Go to home page */
-                    Intent homeIntent = new Intent(LoginActivity.this,
-                        MainActivity.class);
+            try {
+                String email = getTextFromInput(inputEmail, true);
+                String password = getTextFromInput(inputPassword, false);
 
-                    homeIntent.putExtra("email",
-                        email);    /* Bring email value */
-                    startActivity(homeIntent);    /* Move to home page */
-                    finish();    /* Stop the login activity */
-                } else {
-                    /* Show alert message */
-                    String message = "Login failed! Email or Password is wrong.";
-                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                }
+                /* start authentication. */
+                auth.signInWithEmailAndPassword(email, password)
+                    /* If sign in success, reload this activity. */
+                    .addOnSuccessListener(authResult -> {
+                        if (authResult.getUser() != null) goToMainActivity();
+                        else onRestart();
+                    })
+                    /* If failed, show alert message */
+                    .addOnFailureListener(e -> Toast.makeText(this,
+                        "Login failed! Wrong Email or Password.",
+                        Toast.LENGTH_SHORT).show());
+            } catch (Exception e) {
+                Log.w("InvalidInput", "Input is invalid", e);
             }
         });
     }
 
 
-    /**
-     * Validate the inputs.
-     *
-     * @return true if all field input is valid.
-     */
-    private Boolean validateInputs() {
-        String emailRegex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])";
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        if (!inputEmail.getText().toString().matches(emailRegex)) {
-            inputEmail.setError("Invalid email format!");
-            return false;
+        /* Check if user is authorized (non-null). */
+        if (auth.getCurrentUser() != null) {
+            goToMainActivity();
         }
-
-        if (inputPassword.getText().toString().isEmpty()) {
-            inputPassword.setError("Password is required!");
-            return false;
-        }
-
-        return true;
     }
 
 
     /**
-     * Check the user credential.
+     * Retreive data from input, and validate the requirement.
      *
-     * @param email    The user email
-     * @param password The user password
-     * @return true if the credentials is found, false otherwise.
+     * @param input    The input element.
+     * @param required Is value required?
+     * @return The input value.
+     * @throws NullPointerException If validation failed.
      */
-    private Boolean auth(String email, String password) {
-        /* TODO: Needs verify to databases */
-        return !email.isEmpty() && password.equals("12345");
+    private String getTextFromInput(EditText input, boolean required) {
+        String value = input.getText().toString();
+
+        if (value.isEmpty() && required) {
+            input.setError("This input is required");
+            throw new NullPointerException(
+                "Field " + input.getHint() + " is required.");
+        }
+
+        return value;
+    }
+
+
+    /**
+     * Go to main activity.
+     */
+    private void goToMainActivity() {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();    /* Stop current activity. */
     }
 }
