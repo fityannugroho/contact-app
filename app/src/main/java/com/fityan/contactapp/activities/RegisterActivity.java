@@ -12,68 +12,68 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fityan.contactapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     /**
      * Firebase authentication.
      */
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-    /* View Elements */
-    private EditText inputEmail, inputPassword;
-    private Button btnLogin, btnRegister;
+    /* View elements. */
+    private EditText inputEmail, inputPassword, inputCPassword;
+    private Button btnRegister, btnLogin;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
 
-        /* Get View Elements by its id */
+        /* Initialize view elements. */
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
-        btnLogin = findViewById(R.id.btnLogin);
+        inputCPassword = findViewById(R.id.inputCPassword);
         btnRegister = findViewById(R.id.btnRegister);
+        btnLogin = findViewById(R.id.btnLogin);
 
-        /* Event handler when Login Button is clicked */
-        btnLogin.setOnClickListener(view -> {
-            /* Input validation */
+        /* Event handler when Register Button is clicked. */
+        btnRegister.setOnClickListener(view -> {
+            /* Validate inputs, */
             try {
                 String email = getTextFromInput(inputEmail, true);
                 String password = getTextFromInput(inputPassword, true);
+                String cPassword = getTextFromInput(inputCPassword, true);
 
-                /* start authentication. */
-                auth.signInWithEmailAndPassword(email, password)
-                    /* If sign in success, reload this activity. */
+                if (!password.equals(cPassword)) {
+                    inputCPassword.setError("Confirm password doesn't match.");
+                    throw new Exception("Confirm password doesn't match.");
+                }
+
+                /* Start registration. */
+                auth.createUserWithEmailAndPassword(email, password)
+                    /* If success. */
                     .addOnSuccessListener(authResult -> {
-                        if (authResult.getUser() != null) goToMainActivity();
-                        else onRestart();
+                        Toast.makeText(this, "Account registration successful.",
+                            Toast.LENGTH_SHORT).show();
+
+                        /* Go back to login activity. */
+                        startActivity(new Intent(this, LoginActivity.class));
+                        finish();
                     })
-                    /* If failed, show alert message */
-                    .addOnFailureListener(e -> Toast.makeText(this,
-                        "Login failed! Wrong Email or Password.",
-                        Toast.LENGTH_SHORT).show());
+                    /* If failed. */
+                    .addOnFailureListener(
+                        e -> Toast.makeText(this, e.getMessage(),
+                            Toast.LENGTH_LONG).show());
             } catch (Exception e) {
-                Log.w("InvalidInput", "Input is invalid", e);
+                Log.w("InvalidInput", "Some input is invalid.");
             }
         });
 
-        /* Event handler when Login Button is clicked */
-        btnRegister.setOnClickListener(view -> {
+        /* Event handler when Login Button is clicked. */
+        btnLogin.setOnClickListener(view -> {
             /* Go to register activity. */
-            startActivity(new Intent(this, RegisterActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
         });
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        /* Check if user is authorized (non-null). */
-        if (auth.getCurrentUser() != null) {
-            goToMainActivity();
-        }
     }
 
 
@@ -95,14 +95,5 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return value;
-    }
-
-
-    /**
-     * Go to main activity.
-     */
-    private void goToMainActivity() {
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        finish();    /* Stop current activity. */
     }
 }
