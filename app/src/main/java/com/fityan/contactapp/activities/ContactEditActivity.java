@@ -46,14 +46,13 @@ public class ContactEditActivity extends AppCompatActivity {
         contact.setId(getIntent().getStringExtra("id"));
 
         /* Get the contact. */
-        contactsCollection.findOne(contact.getId())
-            .addOnSuccessListener(documentSnapshot -> {
-                /* Display the contact data. */
-                inputName.setText(documentSnapshot.getString("name"));
-                inputPhone.setText(documentSnapshot.getString("phone"));
-                inputEmail.setText(documentSnapshot.getString("email"));
-                inputAddress.setText(documentSnapshot.getString("address"));
-            });
+        contactsCollection.findOne(contact.getId()).addOnSuccessListener(documentSnapshot -> {
+            /* Display the contact data. */
+            inputName.setText(documentSnapshot.getString("name"));
+            inputPhone.setText(documentSnapshot.getString("phone"));
+            inputEmail.setText(documentSnapshot.getString("email"));
+            inputAddress.setText(documentSnapshot.getString("address"));
+        });
 
         /* When Edit Button is clicked, */
         btnEdit.setOnClickListener(view -> {
@@ -69,14 +68,14 @@ public class ContactEditActivity extends AppCompatActivity {
                 contactsCollection.update(contact)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(this, "Contact successfully updated",
-                                Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Contact successfully updated", Toast.LENGTH_SHORT)
+                                .show();
                             finish();    /* Finish the activity and back to previous activity automatically. */
                         }
                     })
                     .addOnFailureListener(
-                        e -> Toast.makeText(this, "Failed to update contact",
-                            Toast.LENGTH_SHORT).show());
+                        e -> Toast.makeText(this, "Failed to update contact", Toast.LENGTH_SHORT)
+                            .show());
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
@@ -100,8 +99,7 @@ public class ContactEditActivity extends AppCompatActivity {
 
         if (value.isEmpty() && required) {
             input.setError("This input is required");
-            throw new NullPointerException(
-                "Field " + input.getHint() + " is required.");
+            throw new NullPointerException("Field " + input.getHint() + " is required.");
         }
 
         return value;

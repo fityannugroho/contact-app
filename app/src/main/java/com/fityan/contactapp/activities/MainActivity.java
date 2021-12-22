@@ -21,6 +21,7 @@ import com.fityan.contactapp.helpers.ContactsCollection;
 import com.fityan.contactapp.models.Contact;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
@@ -36,6 +37,16 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
      * Helper to interact with database.
      */
     private final ContactsCollection contactsCollection = new ContactsCollection();
+
+    /**
+     * Firebase authentication.
+     */
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    /**
+     * Logged user.
+     */
+    private final FirebaseUser user = auth.getCurrentUser();
 
     /**
      * View element to displaying contact list.
@@ -93,11 +104,10 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
             new AlertDialog.Builder(this).setTitle("Logout")
                 .setMessage("Are you sure to logout?")
                 /* Cancel action. */
-                .setNegativeButton("Cancel",
-                    (dialogInterface, i) -> dialogInterface.cancel())
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
                 /* Sign out then redirect to login activity. */
                 .setPositiveButton("Logout", (dialogInterface, i) -> {
-                    FirebaseAuth.getInstance().signOut();
+                    auth.signOut();
                     startActivity(new Intent(this, LoginActivity.class));
                     finish();
                 })
@@ -119,8 +129,7 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
     @Override
     public void onDeleteItem(int position) {
         /* Show confirmation dialog. */
-        AlertDialog dialog = new AlertDialog.Builder(this).setTitle(
-            "Delete Contact")
+        AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Delete Contact")
             .setMessage("Are you sure to delete this contact?")
             .setPositiveButton("Delete Contact", null)
             .setNegativeButton("Cancel", null)
@@ -134,13 +143,12 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
                 .addOnSuccessListener(unused -> {
                     /* Refresh the contact list view */
                     onRestart();
-                    Toast.makeText(getApplicationContext(),
-                        "One contact has been deleted", Toast.LENGTH_SHORT)
-                        .show();
+                    Toast.makeText(getApplicationContext(), "One contact has been deleted",
+                        Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(
-                    e -> Toast.makeText(getApplicationContext(),
-                        "Failed to delete contact", Toast.LENGTH_SHORT).show());
+                    e -> Toast.makeText(getApplicationContext(), "Failed to delete contact",
+                        Toast.LENGTH_SHORT).show());
 
             dialog.dismiss();
         });
@@ -161,20 +169,18 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
      */
     private void loadContactsFromDB() {
         /* Retreive contact data from database. */
-        contactsCollection.findAll()
-            .addOnSuccessListener(queryDocumentSnapshots -> {
-                for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
-                    contacts.add(new Contact(document.getId(),
-                        document.getString("name"), document.getString("phone"),
-                        document.getString("email"),
-                        document.getString("address")));
-                }
+        contactsCollection.findAll(user.getUid()).addOnSuccessListener(queryDocumentSnapshots -> {
+            for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                contacts.add(new Contact(document.getId(), document.getString("name"),
+                    document.getString("phone"), document.getString("email"),
+                    document.getString("address"), user.getUid()));
+            }
 
-                /* Set the adapter to displaying contact list. */
-                rvContact.setAdapter(new ContactAdapter(contacts, this));
-                rvContact.setLayoutManager(new LinearLayoutManager(this));
-                rvContact.setItemAnimator(new DefaultItemAnimator());
-            });
+            /* Set the adapter to displaying contact list. */
+            rvContact.setAdapter(new ContactAdapter(contacts, this));
+            rvContact.setLayoutManager(new LinearLayoutManager(this));
+            rvContact.setItemAnimator(new DefaultItemAnimator());
+        });
     }
 
 

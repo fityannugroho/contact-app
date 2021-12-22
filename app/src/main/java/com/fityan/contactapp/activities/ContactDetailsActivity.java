@@ -34,14 +34,13 @@ public class ContactDetailsActivity extends AppCompatActivity {
         String contactId = getIntent().getStringExtra("id");
 
         /* Get the contact. */
-        contactsCollection.findOne(contactId)
-            .addOnSuccessListener(documentSnapshot -> {
-                /* Display the contact data. */
-                tvName.setText(documentSnapshot.getString("name"));
-                tvPhone.setText(documentSnapshot.getString("phone"));
-                tvEmail.setText(documentSnapshot.getString("email"));
-                tvAddress.setText(documentSnapshot.getString("address"));
-            });
+        contactsCollection.findOne(contactId).addOnSuccessListener(documentSnapshot -> {
+            /* Display the contact data. */
+            tvName.setText(documentSnapshot.getString("name"));
+            tvPhone.setText(documentSnapshot.getString("phone"));
+            tvEmail.setText(documentSnapshot.getString("email"));
+            tvAddress.setText(documentSnapshot.getString("address"));
+        });
 
         /* When Back Button is clicked, back to previous activity. */
         btnBack.setOnClickListener(view -> onBackPressed());
