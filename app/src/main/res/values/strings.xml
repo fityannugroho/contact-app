@@ -18,8 +18,13 @@
     <string name="placeholder_email">example@email.com</string>
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>
+    <string name="label_cpassword">Confirm Password</string>
     <string name="label_button_forgot_password">Forgot Password?</string>
     <string name="label_button_login">Login</string>
+    <string name="label_button_register">Register</string>
+    <string name="text_login">Already have an account?</string>
     <string name="text_register">Don\'t have an account?</string>
-    <string name="label_button_register">Register Now</string>
+    <string name="label_button_secondary_login">Login here</string>
+    <string name="label_button_secondary_register">Register Now</string>
+    <string name="label_button_logout">Logout</string>
 </resources>

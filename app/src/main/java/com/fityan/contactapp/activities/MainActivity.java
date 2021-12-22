@@ -2,9 +2,13 @@ package com.fityan.contactapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -16,6 +20,8 @@ import com.fityan.contactapp.adapters.ContactAdapter;
 import com.fityan.contactapp.helpers.ContactsCollection;
 import com.fityan.contactapp.models.Contact;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
@@ -31,6 +37,16 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
      * Helper to interact with database.
      */
     private final ContactsCollection contactsCollection = new ContactsCollection();
+
+    /**
+     * Firebase authentication.
+     */
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    /**
+     * Logged user.
+     */
+    private final FirebaseUser user = auth.getCurrentUser();
 
     /**
      * View element to displaying contact list.
@@ -50,17 +66,15 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
 
         /* Initialize view elements. */
         rvContact = findViewById(R.id.rvContact);
+        btnAddContact = findViewById(R.id.btnAdd);
 
         /* Retreive contacts from database then displaying it. */
         loadContactsFromDB();
 
-        btnAddContact = findViewById(R.id.btnAdd);
-
         /* When Add Button is clicked, */
         btnAddContact.setOnClickListener(view -> {
             /* go to add contact page. */
-            startActivity(
-                new Intent(getApplicationContext(), ContactNewActivity.class));
+            startActivity(new Intent(this, ContactNewActivity.class));
         });
     }
 
@@ -71,6 +85,35 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
 
         removeContacts();
         loadContactsFromDB();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        /* If Logout Item is selected. */
+        if (item.getItemId() == R.id.logoutItem) {
+            /* Show confirmation dialog. */
+            new AlertDialog.Builder(this).setTitle("Logout")
+                .setMessage("Are you sure to logout?")
+                /* Cancel action. */
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
+                /* Sign out then redirect to login activity. */
+                .setPositiveButton("Logout", (dialogInterface, i) -> {
+                    auth.signOut();
+                    startActivity(new Intent(this, LoginActivity.class));
+                    finish();
+                })
+                .show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -86,8 +129,7 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
     @Override
     public void onDeleteItem(int position) {
         /* Show confirmation dialog. */
-        AlertDialog dialog = new AlertDialog.Builder(this).setTitle(
-            "Delete Contact")
+        AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Delete Contact")
             .setMessage("Are you sure to delete this contact?")
             .setPositiveButton("Delete Contact", null)
             .setNegativeButton("Cancel", null)
@@ -101,13 +143,12 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
                 .addOnSuccessListener(unused -> {
                     /* Refresh the contact list view */
                     onRestart();
-                    Toast.makeText(getApplicationContext(),
-                        "One contact has been deleted", Toast.LENGTH_SHORT)
-                        .show();
+                    Toast.makeText(getApplicationContext(), "One contact has been deleted",
+                        Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(
-                    e -> Toast.makeText(getApplicationContext(),
-                        "Failed to delete contact", Toast.LENGTH_SHORT).show());
+                    e -> Toast.makeText(getApplicationContext(), "Failed to delete contact",
+                        Toast.LENGTH_SHORT).show());
 
             dialog.dismiss();
         });
@@ -128,20 +169,18 @@ public class MainActivity extends AppCompatActivity implements ContactAdapter.On
      */
     private void loadContactsFromDB() {
         /* Retreive contact data from database. */
-        contactsCollection.findAll()
-            .addOnSuccessListener(queryDocumentSnapshots -> {
-                for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
-                    contacts.add(new Contact(document.getId(),
-                        document.getString("name"), document.getString("phone"),
-                        document.getString("email"),
-                        document.getString("address")));
-                }
+        contactsCollection.findAll(user.getUid()).addOnSuccessListener(queryDocumentSnapshots -> {
+            for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                contacts.add(new Contact(document.getId(), document.getString("name"),
+                    document.getString("phone"), document.getString("email"),
+                    document.getString("address"), user.getUid()));
+            }
 
-                /* Set the adapter to displaying contact list. */
-                rvContact.setAdapter(new ContactAdapter(contacts, this));
-                rvContact.setLayoutManager(new LinearLayoutManager(this));
-                rvContact.setItemAnimator(new DefaultItemAnimator());
-            });
+            /* Set the adapter to displaying contact list. */
+            rvContact.setAdapter(new ContactAdapter(contacts, this));
+            rvContact.setLayoutManager(new LinearLayoutManager(this));
+            rvContact.setItemAnimator(new DefaultItemAnimator());
+        });
     }
 
 
