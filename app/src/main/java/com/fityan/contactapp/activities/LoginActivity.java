@@ -11,12 +11,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fityan.contactapp.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthEmailException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     /**
      * Firebase authentication.
      */
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    private FirebaseUser user = auth.getCurrentUser();
 
     /* View Elements */
     private EditText inputEmail, inputPassword;
@@ -45,13 +49,20 @@ public class LoginActivity extends AppCompatActivity {
                 auth.signInWithEmailAndPassword(email, password)
                     /* If sign in success, reload this activity. */
                     .addOnSuccessListener(authResult -> {
-                        if (authResult.getUser() != null) goToMainActivity();
-                        else onRestart();
+                        user = authResult.getUser();
+
+                        if (user == null) recreate();
+                        if (user.isEmailVerified()) goToMainActivity();
+                        else {
+                            Toast.makeText(this, "Please verify your email first then try again.",
+                                Toast.LENGTH_SHORT).show();
+                            auth.signOut();
+                        }
                     })
                     /* If failed, show alert message */
-                    .addOnFailureListener(e -> Toast.makeText(this,
-                        "Login failed! Wrong Email or Password.",
-                        Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(
+                        e -> Toast.makeText(this, "Login failed! Wrong Email or Password.",
+                            Toast.LENGTH_SHORT).show());
             } catch (Exception e) {
                 Log.w("InvalidInput", "Input is invalid", e);
             }
@@ -71,8 +82,18 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
 
         /* Check if user is authorized (non-null). */
-        if (auth.getCurrentUser() != null) {
+        try {
+            if (user == null) throw new FirebaseAuthInvalidUserException("404", "User not found.");
+            if (!user.isEmailVerified()) {
+                auth.signOut();
+                throw new FirebaseAuthEmailException("404", "Email is not verified.");
+            }
             goToMainActivity();
+        } catch (FirebaseAuthEmailException e) {
+            Toast.makeText(this, "Please verify your email first then try again.",
+                Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Log.w("login", "User not found", e);
         }
     }
 
@@ -90,8 +111,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (value.isEmpty() && required) {
             input.setError("This input is required");
-            throw new NullPointerException(
-                "Field " + input.getHint() + " is required.");
+            throw new NullPointerException("Field " + input.getHint() + " is required.");
         }
 
         return value;

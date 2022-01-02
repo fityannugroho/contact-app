@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fityan.contactapp.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
     /**
@@ -50,19 +51,29 @@ public class RegisterActivity extends AppCompatActivity {
 
                 /* Start registration. */
                 auth.createUserWithEmailAndPassword(email, password)
-                    /* If success. */
                     .addOnSuccessListener(authResult -> {
-                        Toast.makeText(this, "Account registration successful.",
-                            Toast.LENGTH_SHORT).show();
+                        /* If success. */
+                        FirebaseUser user = authResult.getUser();
 
-                        /* Go back to login activity. */
-                        startActivity(new Intent(this, LoginActivity.class));
-                        finish();
+                        if (user != null) {
+                            /* Send email verification. */
+                            user.sendEmailVerification().addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    /* Go to verify email. */
+                                    startActivity(new Intent(this, VerifyEmailActivity.class));
+                                    finish();
+                                } else {
+                                    Log.e("sendEmailVerif", "Email verification failed",
+                                        task.getException());
+                                    Toast.makeText(this, "Failed to send email verification",
+                                        Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                     })
-                    /* If failed. */
                     .addOnFailureListener(
-                        e -> Toast.makeText(this, e.getMessage(),
-                            Toast.LENGTH_LONG).show());
+                        /* If failed. */
+                        e -> Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show());
             } catch (Exception e) {
                 Log.w("InvalidInput", "Some input is invalid.");
             }
@@ -90,8 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (value.isEmpty() && required) {
             input.setError("This input is required");
-            throw new NullPointerException(
-                "Field " + input.getHint() + " is required.");
+            throw new NullPointerException("Field " + input.getHint() + " is required.");
         }
 
         return value;
